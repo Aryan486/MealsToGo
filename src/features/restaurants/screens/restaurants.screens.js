@@ -1,17 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { SafeAreaView, StatusBar, Text, View, FlatList } from "react-native";
-import { Searchbar } from "react-native-paper";
 import { RestaurantInfoCard } from "../components/restaurantInfoCard.components.js";
 import styled from "styled-components/native";
+import { RestaurantContext } from "../../../services/restaurants/restaurants.context.js";
+import { ActivityIndicator, Colors } from "react-native-paper";
+import { Search } from "../components/search.components.js";
 
 const Container = styled.SafeAreaView`
     flex:1;
     margin-top: ${StatusBar.currentHeight}px;
-`;
-
-const SearchConatiner = styled.View`
-    padding: ${(props) => props.theme.space[3]};
-    background-color: ${(props) => props.theme.colors.ui.primary};
 `;
 
 const CardContainer = styled.View`
@@ -21,18 +18,31 @@ const CardContainer = styled.View`
 `;
 
 export const RestaurantScreen = () => {
+    const { restaurants, isLoading, isError } = useContext(RestaurantContext);
+
     return (
         <Container>
+
             <StatusBar backgroundColor="white" />
-            <SearchConatiner>
-                <Searchbar placeholder="Search" />
-            </SearchConatiner>
+            <Search />
             <CardContainer>
-                <FlatList
-                    data={[{ name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }, { name: 6 }]}
-                    renderItem={() => <RestaurantInfoCard />}
-                    keyExtractor={(item) => item.name}
-                />
+                {isLoading ?
+                    (
+                        <View>
+                            <ActivityIndicator color={Colors.red400} size={50} />
+                        </View>
+                    ) :
+                    (
+                        <FlatList
+                            data={restaurants}
+                            renderItem={({ item }) => {
+                                return (
+                                    <RestaurantInfoCard restaurant={item} />
+                                )
+                            }}
+                            keyExtractor={(item) => item.vicinity}
+                        />
+                    )}
             </CardContainer>
         </Container>
     );

@@ -50,9 +50,10 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
         icon = [
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlIOzzTmSEZjWIScs865U59oKTfIK0oz1K2A&usqp=CAU"
         ],
-        isOpen = true,
+        isOpenNow = true,
         rating = 4,
-        address = "9th Street"
+        vicinity = "9th Street",
+        placeID = "some random id"
     } = restaurant;
 
     const ratingArray = Array.from(new Array(Math.floor(rating)));
@@ -65,15 +66,15 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
                     <Title>{name}</Title>
                     <Section>
                         <RatingStyle>
-                            {ratingArray.map(() => (
-                                <SvgXml xml={star} height={20} width={20} />
+                            {ratingArray.map((_, i) => (
+                                <SvgXml key={`star-${placeID}-${i}`} xml={star} height={20} width={20} />
                             ))}
                             <OpenContainer>
-                                {isOpen && <SvgXml xml={open} width={20} height={20} />}
+                                {isOpenNow && <SvgXml xml={open} width={20} height={20} />}
                             </OpenContainer>
                         </RatingStyle>
                     </Section>
-                    <Address>{address}</Address>
+                    <Address>{vicinity}</Address>
                 </RestaurantInfo>
             </Card>
         </CardContainer>
