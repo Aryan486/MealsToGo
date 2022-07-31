@@ -6,11 +6,11 @@ export const LocationContext = createContext();
 export const LocationContextProvider = ({ children }) => {
     const [keyword, setKeyword] = useState("Antwerp");
     const [error, setError] = useState(null)
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingLocation, setIsLoadingLocation] = useState(false)
     const [location, setLocation] = useState(null)
 
     const onSearch = (searchKey) => {
-        setIsLoading(true);
+        setIsLoadingLocation(true);
         setKeyword(searchKey);
         setLocation(null)
         if (!searchKey.length) {
@@ -19,12 +19,12 @@ export const LocationContextProvider = ({ children }) => {
         LocationRequest(searchKey.toLowerCase())
             .then(LocationTransform)
             .then((result) => {
-                setIsLoading(false)
+                setIsLoadingLocation(false)
                 setLocation(result)
             })
             .catch(err => {
                 setError(err)
-                setIsLoading(false)
+                setIsLoadingLocation(false)
                 console.log(err)
             })
     }
@@ -39,7 +39,7 @@ export const LocationContextProvider = ({ children }) => {
                 keyword,
                 error,
                 location,
-                isLoading,
+                isLoadingLocation,
                 search: onSearch
             }}>
             {children}
